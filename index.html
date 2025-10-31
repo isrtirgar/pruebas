@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider con Zoom y Modal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Galería con Efecto Zoom</h1>
+
+        <!-- Slider -->
+        <div class="slider-container">
+            <button class="slider-btn prev" onclick="moveSlider(-1)">&#10094;</button>
+
+            <div class="slider-wrapper">
+                <div class="slider" id="slider">
+                    <div class="slide" onclick="openModal(0)">
+                        <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-5.jpg" alt="Sala 5">
+                    </div>
+                    <div class="slide" onclick="openModal(1)">
+                        <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-4-2.jpg" alt="Sala 4">
+                    </div>
+                    <div class="slide" onclick="openModal(2)">
+                        <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-3.jpg" alt="Sala 3">
+                    </div>
+                    <div class="slide" onclick="openModal(3)">
+                        <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-2-1.jpg" alt="Sala 2">
+                    </div>
+                    <div class="slide" onclick="openModal(4)">
+                        <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-1.jpg" alt="Sala 1">
+                    </div>
+                </div>
+            </div>
+
+            <button class="slider-btn next" onclick="moveSlider(1)">&#10095;</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <button class="modal-btn prev" onclick="changeModalImage(-1)">&#10094;</button>
+        <img class="modal-content" id="modalImg">
+        <button class="modal-btn next" onclick="changeModalImage(1)">&#10095;</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!-- SLIDER CON ZOOM Y MODAL - WORDPRESS -->
+<style>
+.gallery-slider-wrapper {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.gallery-slider-wrapper * {
+    box-sizing: border-box;
+}
+
+.gallery-slider-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.gallery-slider-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Slider Container */
+.gallery-slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.gallery-slider-inner {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery-slider {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    gap: 30px;
+    padding: 50px 0;
+}
+
+.gallery-slide {
+    min-width: calc(33.333% - 20px);
+    height: 300px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.5s ease;
+    transform: scale(0.85);
+    opacity: 0.6;
+    filter: blur(2px);
+    flex-shrink: 0;
+}
+
+/* Efecto zoom en la imagen central */
+.gallery-slide.center {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: blur(0);
+    z-index: 10;
+}
+
+.gallery-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.gallery-slide:hover img {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Botones del slider */
+.gallery-slider-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #ddd;
+    color: #333;
+    font-size: 24px;
+    padding: 15px 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-slider-btn:hover {
+    background: white;
+    transform: scale(1.1);
+    border-color: #333;
+}
+
+.gallery-slider-btn:active {
+    transform: scale(0.95);
+}
+
+/* Modal */
+.gallery-modal {
+    display: none;
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+.gallery-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: galleryFadeIn 0.3s ease;
+}
+
+@keyframes galleryFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.gallery-modal-content {
+    max-width: 90%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    animation: galleryZoomIn 0.3s ease;
+}
+
+@keyframes galleryZoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Botón cerrar (X) */
+.gallery-close {
+    position: absolute;
+    top: 30px;
+    right: 45px;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000000;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.gallery-close:hover,
+.gallery-close:focus {
+    color: #ff6b6b;
+    transform: rotate(90deg);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Botones del modal */
+.gallery-modal-btn {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    color: #333;
+    font-size: 30px;
+    padding: 20px 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000000;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-modal-btn.prev {
+    left: 30px;
+}
+
+.gallery-modal-btn.next {
+    right: 30px;
+}
+
+.gallery-modal-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.gallery-modal-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gallery-slide {
+        min-width: calc(50% - 15px);
+        height: 250px;
+    }
+
+    .gallery-slider-title {
+        font-size: 1.8rem;
+    }
+
+    .gallery-modal-content {
+        max-width: 95%;
+        max-height: 80%;
+    }
+
+    .gallery-close {
+        top: 15px;
+        right: 20px;
+        font-size: 40px;
+    }
+
+    .gallery-modal-btn {
+        font-size: 24px;
+        padding: 15px 20px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .gallery-modal-btn.prev {
+        left: 15px;
+    }
+
+    .gallery-modal-btn.next {
+        right: 15px;
+    }
+
+    .gallery-slider-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-slide {
+        min-width: calc(100% - 10px);
+        height: 200px;
+    }
+
+    .gallery-slider {
+        gap: 15px;
+    }
+
+    .gallery-slider-btn {
+        font-size: 18px;
+        padding: 10px 15px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .gallery-slider-container {
+        gap: 10px;
+    }
+}
+</style>
+
+<div class="gallery-slider-wrapper">
+    <h2 class="gallery-slider-title">Galería de Imágenes</h2>
+
+    <!-- Slider -->
+    <div class="gallery-slider-container">
+        <button class="gallery-slider-btn prev" onclick="galleryMoveSlider(-1)">&#10094;</button>
+
+        <div class="gallery-slider-inner">
+            <div class="gallery-slider" id="gallerySlider">
+                <div class="gallery-slide" onclick="galleryOpenModal(0)">
+                    <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-5.jpg" alt="Sala 5">
+                </div>
+                <div class="gallery-slide" onclick="galleryOpenModal(1)">
+                    <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-4-2.jpg" alt="Sala 4">
+                </div>
+                <div class="gallery-slide" onclick="galleryOpenModal(2)">
+                    <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-3.jpg" alt="Sala 3">
+                </div>
+                <div class="gallery-slide" onclick="galleryOpenModal(3)">
+                    <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-2-1.jpg" alt="Sala 2">
+                </div>
+                <div class="gallery-slide" onclick="galleryOpenModal(4)">
+                    <img src="https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-1.jpg" alt="Sala 1">
+                </div>
+            </div>
+        </div>
+
+        <button class="gallery-slider-btn next" onclick="galleryMoveSlider(1)">&#10095;</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="gallery-modal" id="galleryModal">
+    <span class="gallery-close" onclick="galleryCloseModal()">&times;</span>
+    <button class="gallery-modal-btn prev" onclick="galleryChangeModalImage(-1)">&#10094;</button>
+    <img class="gallery-modal-content" id="galleryModalImg" alt="Imagen ampliada">
+    <button class="gallery-modal-btn next" onclick="galleryChangeModalImage(1)">&#10095;</button>
+</div>
+
+<script>
+(function() {
+    // Array de imágenes
+    const galleryImages = [
+        'https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-5.jpg',
+        'https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-4-2.jpg',
+        'https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-3.jpg',
+        'https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-2-1.jpg',
+        'https://www.andresaparicioestudio.com/wp-content/uploads/2025/10/foto-sala-1.jpg'
+    ];
+
+    let galleryCurrentIndex = 1;
+    let galleryModalCurrentIndex = 0;
+
+    // Función para actualizar el slider
+    function galleryUpdateSlider() {
+        const slider = document.getElementById('gallerySlider');
+        const slides = slider.querySelectorAll('.gallery-slide');
+        const slideWidth = slides[0].offsetWidth;
+        const gap = 30;
+        const offset = -(galleryCurrentIndex * (slideWidth + gap)) + (slider.parentElement.offsetWidth / 2) - (slideWidth / 2);
+
+        slider.style.transform = `translateX(${offset}px)`;
+
+        // Actualizar clases para el efecto zoom
+        slides.forEach((slide, index) => {
+            if (index === galleryCurrentIndex) {
+                slide.classList.add('center');
+            } else {
+                slide.classList.remove('center');
+            }
+        });
+    }
+
+    // Función para mover el slider
+    window.galleryMoveSlider = function(direction) {
+        const slider = document.getElementById('gallerySlider');
+        const slides = slider.querySelectorAll('.gallery-slide');
+        const totalSlides = slides.length;
+
+        galleryCurrentIndex += direction;
+
+        if (galleryCurrentIndex < 0) {
+            galleryCurrentIndex = 0;
+        } else if (galleryCurrentIndex >= totalSlides) {
+            galleryCurrentIndex = totalSlides - 1;
+        }
+
+        galleryUpdateSlider();
+    };
+
+    // Función para abrir el modal
+    window.galleryOpenModal = function(index) {
+        const modal = document.getElementById('galleryModal');
+        const modalImg = document.getElementById('galleryModalImg');
+
+        galleryModalCurrentIndex = index;
+        modal.classList.add('active');
+        modalImg.src = galleryImages[index];
+        document.body.style.overflow = 'hidden';
+    };
+
+    // Función para cerrar el modal
+    window.galleryCloseModal = function() {
+        const modal = document.getElementById('galleryModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    };
+
+    // Función para cambiar imagen en el modal
+    window.galleryChangeModalImage = function(direction) {
+        galleryModalCurrentIndex += direction;
+
+        if (galleryModalCurrentIndex < 0) {
+            galleryModalCurrentIndex = galleryImages.length - 1;
+        } else if (galleryModalCurrentIndex >= galleryImages.length) {
+            galleryModalCurrentIndex = 0;
+        }
+
+        const modalImg = document.getElementById('galleryModalImg');
+        modalImg.style.animation = 'none';
+        setTimeout(() => {
+            modalImg.src = galleryImages[galleryModalCurrentIndex];
+            modalImg.style.animation = 'galleryZoomIn 0.3s ease';
+        }, 50);
+    };
+
+    // Cerrar modal con tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            galleryCloseModal();
+        }
+    });
+
+    // Navegar con flechas en el modal
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('galleryModal');
+        if (modal.classList.contains('active')) {
+            if (e.key === 'ArrowLeft') {
+                galleryChangeModalImage(-1);
+            } else if (e.key === 'ArrowRight') {
+                galleryChangeModalImage(1);
+            }
+        }
+    });
+
+    // Cerrar modal al hacer clic fuera de la imagen
+    document.getElementById('galleryModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            galleryCloseModal();
+        }
+    });
+
+    // Inicializar el slider
+    window.addEventListener('load', function() {
+        galleryUpdateSlider();
+    });
+
+    // Actualizar al cambiar tamaño de ventana
+    window.addEventListener('resize', function() {
+        galleryUpdateSlider();
+    });
+})();
+</script>
